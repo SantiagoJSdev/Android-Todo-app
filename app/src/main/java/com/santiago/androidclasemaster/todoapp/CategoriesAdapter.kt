@@ -1,17 +1,20 @@
 package com.santiago.androidclasemaster.todoapp
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.santiago.androidclasemaster.R
 
 class CategoriesAdapter(private val categories:List<TaskCategory>) :
     RecyclerView.Adapter<CategoriesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
-        TODO("Not yet implemented")
+       val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_category, parent, false)
+        return CategoriesViewHolder(view)
     }
 
         override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.render(categories[position])
     }
 
     override fun getItemCount() = categories.size
