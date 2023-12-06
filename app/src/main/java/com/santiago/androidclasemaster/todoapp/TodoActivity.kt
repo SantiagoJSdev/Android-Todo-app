@@ -99,4 +99,8 @@ class TodoActivity : AppCompatActivity() {
 
         taskAdapter.notifyDataSetChanged()
     }
+    private fun onItemSelected(position:Int){
+        tasks[position].isSelected = !tasks[position].isSelected
+        updateTasks()
+    }
 }
