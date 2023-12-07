@@ -28,7 +28,7 @@ class TodoActivity : AppCompatActivity() {
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var fabAddTask: FloatingActionButton
     private lateinit var rvTasks: RecyclerView
-    private lateinit var taskAdapter: TaskAdapter
+    private lateinit var taskAdapter: TasksAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo)
@@ -76,12 +76,12 @@ class TodoActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        categoriesAdapter = CategoriesAdapter(categories)
+        categoriesAdapter = CategoriesAdapter(categories) { position -> updateCategories(position) }
         //aca coloco el recyclerView horizontal o vertical
         rvCategories.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvCategories.adapter = categoriesAdapter
 
-        taskAdapter = TaskAdapter(tasks)
+        taskAdapter = TasksAdapter(tasks) {position -> onItemSelected(position)}
         rvTasks.layoutManager = LinearLayoutManager(this)
         rvTasks.adapter = taskAdapter
     }
@@ -93,14 +93,18 @@ class TodoActivity : AppCompatActivity() {
     }
 
     private fun updateTasks(){
-       // val selectedCategories: List<TaskCategory> = categories.filter { it.isSelected }
-      //  val newTasks = tasks.filter { selectedCategories.contains(it.category) }
-
-
+        val selectedCategories: List<TaskCategory> = categories.filter { it.isSelected }
+        val newTasks = tasks.filter { selectedCategories.contains(it.category) }
+        taskAdapter.tasks = newTasks
         taskAdapter.notifyDataSetChanged()
     }
     private fun onItemSelected(position:Int){
         tasks[position].isSelected = !tasks[position].isSelected
+        updateTasks()
+    }
+    private fun updateCategories(position: Int){
+        categories[position].isSelected = !categories[position].isSelected
+        categoriesAdapter.notifyItemChanged(position)
         updateTasks()
     }
 }
